@@ -3,7 +3,7 @@
 
 from sqlite3 import connect, Error
 
-def init_db(comment=True):
+def init_db(debug=True):
     try:
         conn = connect('flashcard.db')
         c = conn.cursor()
@@ -35,11 +35,11 @@ def init_db(comment=True):
                 ''')   
         
         conn.commit()
-        if comment:
+        if debug:
             print('Initialisation des tables réussie')
     except Error as e:
         print(f"Erreur lors de la création des tables: {e}")
     finally:
         conn.close()
-        if comment:
+        if debug:
             print('Connection à la base de donnée fermée')
