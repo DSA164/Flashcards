@@ -23,4 +23,9 @@ réutilisation de la fonction get_card() dans les autres fonctions, en relisant 
 - Vérification que les variables sont initialisées avant de les retourner par les méthodes :
   - soit en les initialisant à "None" au début de la méthode,
   - soit en vérifiant qu'elles sont présentes dans les variables locales avec locals().
-- Définition des types des arguments des méthodes pour éviter les erreurs lors des appels.git
+- Définition des types des arguments des méthodes pour éviter les erreurs lors des appels
+
+## v1.3
+- CRUD.py à été renommé par crud_cards.py
+- Creation du script CRUD pour les thèmes: crud_themes.py
+- Correction mineur pour les variables non initialisée

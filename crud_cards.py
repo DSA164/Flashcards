@@ -1,5 +1,5 @@
-#      Fonction CRUD pour les flashcards
-#===========================================
+#      Fonctions CRUD pour les flashcards
+#============================================
 
 from sqlite3 import connect, Error
 from contextlib import contextmanager  # contextmanager pour: yield
@@ -42,7 +42,7 @@ def database_connection(debug: bool = False):
         
     
 # Créer une carte
-def create_card(question: str, reponse: str, probabilite: str, id_theme: int, debug: bool = False): 
+def create_card(question: str, reponse: str, probabilite: float, id_theme: int, debug: bool = False): 
     last_id = None
     with database_connection(debug) as conn:
         try:
@@ -57,7 +57,7 @@ def create_card(question: str, reponse: str, probabilite: str, id_theme: int, de
         except Error as e:
             print(f"Erreur lors de la création de la carte : \n{e}")
             return None  
-    return get_card(last_id, debug) if last_id is not None else None
+    return get_card(last_id, debug) if last_id is not None else last_id
     
     
 # Récupérer une carte    
@@ -83,7 +83,7 @@ def update_card(id: int, question: str, reponse: str, probabilite: str, id_theme
             conn.commit()
             card = get_card(id, debug)
             if card and debug:
-                print(f"La carte {id} a été mise à jour avec les informtions suivantes: \n{card}")
+                print(f"La carte {id} a été mise à jour avec les informations suivantes: \n{card}")
         except Error as e:
             print(f"La carte {id} n'a pas pu être mise à jour en raison de: \n{e}")
     return card
@@ -108,6 +108,7 @@ def delete_card(id: int, debug: bool = False):
 
 # Récupérer toutes les cartes
 def get_all_cards(debug: bool = False):
+    cards = []
     with database_connection(debug) as conn:
         try:
             c = conn.cursor()
@@ -119,7 +120,7 @@ def get_all_cards(debug: bool = False):
                 for card in cards:
                     print(card)
         except Error as e:
-            print(f"La selection n'a pas pu être opérée:\n{e}")
+            print(f"La sélection n'a pas pu être opérée:\n{e}")
     return cards
     
     
@@ -132,11 +133,13 @@ def get_number_of_cards(debug: bool = False):
             count = c.fetchone()
         except Error as e:
             print(f"La demande n'a pas pu être réalisée en raison de: {e}")
+            return None
     return count[0] if count in locals() else None
     
     
 # Récupérer les cartes appartenant à un thème particulier
 def get_cards_by_theme(id_theme: int, debug: bool = False):
+    cards = []
     with database_connection(debug) as conn:    
         try:
             c = conn.cursor()

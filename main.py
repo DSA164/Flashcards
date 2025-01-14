@@ -3,7 +3,8 @@
 
 # Librairie avec les fonctions personelles
 from .init import init_db  # fichier sqlite3 pour générer les tables
-from CRUD import *
+from crud_cards import *
+from crud_themes import *
 
 # Message de débugage:
 debug = True   # mettre à False pour ne plus avoir les messages informatifs
