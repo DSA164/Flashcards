@@ -11,4 +11,4 @@ debug = True   # mettre à False pour ne plus avoir les messages informatifs
 
 # Creation des tables
 if __name__ == '__main__':
-    init_db(comment)
+    init_db(debug)

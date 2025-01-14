@@ -18,5 +18,9 @@ Programme de flashcards en python pour des fiches d'apprentissage par renforceme
 - trop de répétions pour les messages d'erreur (if + print)... => creation de fonction de log
 réutilisation de la fonction get_card() dans les autres fonctions, en relisant le code ce midi je me suis rendu compte que je répétais les mêmes codes
 
-
-
+## v1.2
+- Utilisation de la gestion de contexte et création d'une méthode de connexion à la base de données pour éviter d'avoir à l'ouvrir et la fermer dans chaque fonction.
+- Vérification que les variables sont initialisées avant de les retourner par les méthodes :
+  - soit en les initialisant à "None" au début de la méthode,
+  - soit en vérifiant qu'elles sont présentes dans les variables locales avec locals().
+- Définition des types des arguments des méthodes pour éviter les erreurs lors des appels.git
