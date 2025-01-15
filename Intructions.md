@@ -1,11 +1,13 @@
 # Projet : Application de Flashcards
 
-## 2.1 Introduction au projet
+# 1 Instructions pour l'écriture des scripts du progamme flashcards
+
+## 1.1 Introduction au projet
 Le but de ce projet est de construire une application de flashcards. Ce type d’application permet à l’utilisateur de créer des cartes mentales, avec une information ou question par carte, et d’essayer de répondre à la question ou d’expliquer le concept. La subtilité est que l’apparition des cartes dépend de si vous arrivez à avoir la bonne réponse. Plus vous serez à l’aise avec un concept, moins la carte apparaîtra. En revanche, plus vous avez du mal avec un concept, plus la carte apparaîtra fréquemment.
 
 L’objectif de cette partie est de développer la base de données et les fonctions de base pour interagir avec elle. Par la suite, nous développerons l’interface dans le chapitre de Streamlit pour aboutir à une application de flashcards utilisable.
 
-## 2.2 Schéma de la Base de Données
+## 1.2 Schéma de la Base de Données
 Votre base de données pour l’application de Flashcards comprendra trois tables principales :
 
 - **cards** : Contient les flashcards.
@@ -34,11 +36,11 @@ Votre base de données pour l’application de Flashcards comprendra trois table
 *Note :* Le champ *probabilite* est un réel compris entre 0.1 et 1.
 Pour éviter de supprimer une flashcard utilisant un thème, la contrainte *ON DELETE RESTRICT* est ajoutée à la clé étrangère *id_theme*.
 
-## 2.3 Fonctions à Implémenter
+## 1.3 Fonctions à Implémenter
 
 Votre tâche est de créer les fonctions Python suivantes pour interagir avec la base de données SQLite. Ces fonctions doivent respecter les spécifications fournies.
 
-### 2.3.1 Initialisation de la Base de Données
+### 1.3.1 Initialisation de la Base de Données
 
 **Fonction :** `init_db()`
 
@@ -48,7 +50,7 @@ Votre tâche est de créer les fonctions Python suivantes pour interagir avec la
 - Utilise `sqlite3.connect()` pour établir une connexion.
 - Valide les modifications avec `conn.commit()` et ferme la connexion.
 
-### 2.3.2 Fonctions CRUD pour les Flashcards
+### 1.3.2 Fonctions CRUD pour les Flashcards
 
 **Fonctions :**
 - `create_card(question, reponse, probabilite, id_theme)` : Crée une carte.
@@ -59,7 +61,7 @@ Votre tâche est de créer les fonctions Python suivantes pour interagir avec la
 - `get_number_of_cards()` : Obtient le nombre total de cartes.
 - `get_cards_by_theme(id_theme)` : Récupère les cartes par thème.
 
-### 2.3.3 Fonctions CRUD pour les Thèmes
+### 1.3.3 Fonctions CRUD pour les Thèmes
 
 **Fonctions :**
 - `create_theme(theme)` : Crée un thème.
@@ -68,7 +70,7 @@ Votre tâche est de créer les fonctions Python suivantes pour interagir avec la
 - `delete_theme(id_theme)` : Supprime un thème.
 - `get_all_themes()` : Récupère tous les thèmes.
 
-### 2.3.4 Fonctions pour les Statistiques
+### 1.3.4 Fonctions pour les Statistiques
 
 **Fonctions :**
 - `update_stats(is_correct)` : Met à jour les statistiques.

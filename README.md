@@ -29,3 +29,10 @@ réutilisation de la fonction get_card() dans les autres fonctions, en relisant 
 - CRUD.py à été renommé par crud_cards.py
 - Creation du script CRUD pour les thèmes: crud_themes.py
 - Correction mineur pour les variables non initialisée
+- probabilite fix at float instead of str
+
+## v1.4
+- Creation du script CRUD pour les statistiques: crud_stats.py
+- Vérification que probabilite soit bien comprise entre 0.1 et 1 dans create_cards() et update_card()
+- Correction mineur dans crud_cards, crud_themes et main.py
+- Correction des paragraphe dans Instructions.md

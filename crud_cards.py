@@ -25,6 +25,7 @@ def log_message(message: str, debug: bool):
 #      Manipulation de la base de donnée
 #-------------------------------------------
 
+# Accéder à la base de donnée
 @contextmanager
 def database_connection(debug: bool = False):
     conn = None
@@ -40,9 +41,13 @@ def database_connection(debug: bool = False):
             conn.close()
             close_db(debug)
         
+        
+# cards (id, question, reponse, probabilite, id_theme)    
     
 # Créer une carte
 def create_card(question: str, reponse: str, probabilite: float, id_theme: int, debug: bool = False): 
+    if probabilite < 0.1 or probabilite > 1:
+        print("La probalité d'apparition d'un carte doit être comprise en 0.1 et 1!")
     last_id = None
     with database_connection(debug) as conn:
         try:
@@ -74,7 +79,9 @@ def get_card(id: int, debug: bool = False):
     
 
 # Mettre à jour une carte avec des nouvelles données
-def update_card(id: int, question: str, reponse: str, probabilite: str, id_theme: int, debug: bool = False):
+def update_card(id: int, question: str, reponse: str, probabilite: float, id_theme: int, debug: bool = False):
+    if probabilite < 0.1 or probabilite > 1:
+        print("La probalité d'apparition d'un carte doit être comprise en 0.1 et 1!")
     with database_connection(debug) as conn:
         try:
             c = conn.cursor()

@@ -2,8 +2,9 @@
 #=========================================
 
 from sqlite3 import connect, Error
-from crud_cards import open_db, close_db, database_connection
+from crud_cards import database_connection
 
+# themes (id, theme) 
 
 # Créer un thèmes
 def create_theme(theme: str, debug: bool = False):
