@@ -1,32 +1,31 @@
 #     METHODE DE CREATION DES TABLES
 #=======================================
 
-from sqlite3 import connect, Error
+from sqlite3 import connect, Error as sqlite3Error
 
 def init_db(debug=True):
     try:
         conn = connect('flashcard.db')
         c = conn.cursor()
-        c.execute('''
-                    CREATE TABLE IF NOT EXISTS cards(
+        
+        c.execute("PRAGMA foreign_keys = ON;")
+        c.execute('''CREATE TABLE IF NOT EXISTS cards(
                         id INTEGER PRIMARY KEY,
                         question TEXT,
                         reponse TEXT,
                         probabilite REAL,
-                        id_theme INTEGER 
-                        FOREIGN (id_theme) KEY REFERENCES themes(id) ON DELETE RESTRICT
+                        id_theme INTEGER, 
+                        FOREIGN KEY (id_theme) REFERENCES themes(id) ON DELETE RESTRICT
                     );
                 ''') 
         
-        c.execute(''' 
-                    CREATE TABLE IF NOT EXISTS themes(
+        c.execute('''CREATE TABLE IF NOT EXISTS themes(
                         id INTEGER PRIMARY KEY,
                         theme TEXT     
                     );
                 ''')   
         
-        c.execute('''
-                    CREATE TABLE IF NOT EXISTS stats(
+        c.execute('''CREATE TABLE IF NOT EXISTS stats(
                         id INTEGER PRIMARY KEY,
                         bonnes_reponses INTEGER,
                         mauvaises_reponses INTEGER,
@@ -37,7 +36,7 @@ def init_db(debug=True):
         conn.commit()
         if debug:
             print('Initialisation des tables réussie')
-    except Error as e:
+    except sqlite3Error as e:
         print(f"Erreur lors de la création des tables: {e}")
     finally:
         conn.close()

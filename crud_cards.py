@@ -30,7 +30,7 @@ def log_message(message: str, debug: bool):
 def database_connection(debug: bool = False):
     conn = None
     try:
-        conn = connect('flashcard')
+        conn = connect('flashcard.db')
         open_db(debug)
         yield conn  # permet de retourner sans intérompre la fonction
     except Error as e:
@@ -46,19 +46,23 @@ def database_connection(debug: bool = False):
     
 # Créer une carte
 def create_card(question: str, reponse: str, probabilite: float, id_theme: int, debug: bool = False): 
-    if probabilite < 0.1 or probabilite > 1:
-        print("La probalité d'apparition d'un carte doit être comprise en 0.1 et 1!")
     last_id = None
     with database_connection(debug) as conn:
         try:
-            c = conn.cursor()
-            c.execute('''
-                        INSERT INTO cards (question, reponse, probabilite, id_theme) 
-                        VALUES (?, ?, ?, ?)
-                    ''', (question, reponse, probabilite, id_theme)
-                    )
-            conn.commit()
-            last_id = c.lastrowid
+            if question in [card[1] for card in get_all_cards(False)]:
+                print("Cette carte est déjà dans la base de données")
+                return last_id
+            elif probabilite < 0.1 or probabilite > 1:
+                print("La probalité d'apparition d'un carte doit être comprise en 0.1 et 1!")
+                return last_id
+            else:
+                c = conn.cursor()
+                c.execute('''INSERT INTO cards (question, reponse, probabilite, id_theme) 
+                            VALUES (?, ?, ?, ?)
+                        ''', (question, reponse, probabilite, id_theme)
+                        )
+                conn.commit()
+                last_id = c.lastrowid
         except Error as e:
             print(f"Erreur lors de la création de la carte : \n{e}")
             return None  

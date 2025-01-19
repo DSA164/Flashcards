@@ -1,10 +1,10 @@
 #      Fonctions CRUD pour les statistiques
 #===============================================
 
-from sqlite3 import Error
+from sqlite3 import Error as sqlite3Error
 from crud_cards import database_connection, get_card,update_card
 from datetime import datetime
-from matplotlib.pyplot import plot as plt
+import matplotlib.pyplot as plt
 
 #      Manipulation de la base de donnée
 #-------------------------------------------
@@ -35,7 +35,7 @@ def update_stats(is_correct: bool, debug: bool = False):
             conn.commit()
             c.execute("SELECT * FROM stats WHERE date=?", (today,))
             stat = c.fetchone()  
-        except Error as e:
+        except sqlite3Error as e:
             print(f"La statistique n'a pas pu être mise à jour en raison de:\n{e}")
     return stat
 
@@ -54,7 +54,7 @@ def update_card_probability(card_id: int, is_correct: bool, debug: bool = False)
         probabilite *= 0.9 if is_correct else 1.1
         probabilite = max(0.1, min(probabilite, 1.0))
         update_card(card[0], card[1], card[2], probabilite, card[4]) 
-    except Error as e :
+    except sqlite3Error as e :
         print(f"La probalité de la carte {card_id} n'a pas pu être mise à jour en raison de:\n{e}")
         return None
     return probabilite
@@ -82,7 +82,7 @@ def get_stats(debug: bool = False):
                 plt.ylabel('Nombre de réponses')
                 plt.legend()
                 plt.show()
-        except Error as e:
+        except sqlite3Error as e:
             print(f"Les statistiques n'ont pas pu être lues en raison de:\n{e}")
             return None
     return stats
