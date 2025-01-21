@@ -9,13 +9,12 @@ from crud_cards import database_connection
 # Créer un thèmes
 def create_theme(theme: str, debug: bool = False):
     last_id = None
-    with database_connection(debug) as conn:
+    with database_connection(debug) as (conn, c):
         try:
             if theme in [t for t in get_all_themes(False)]:
                 print(f"Le theme '{theme}' existe déjà dans la base de données")
                 return None
             else:
-                c = conn.cursor()
                 c.execute("INSERT INTO themes (theme) VALUES (?)", (theme,))
                 conn.commit()
                 last_id = c.lastrowid
@@ -27,9 +26,8 @@ def create_theme(theme: str, debug: bool = False):
 
 # Récupérer un thème   
 def get_theme(id: int, debug: bool = False):
-    with database_connection(debug) as conn:
+    with database_connection(debug) as (conn, c):
         try:
-            c = conn.cursor()
             c.execute("SELECT * FROM themes WHERE id=?", (id, )) 
             theme = c.fetchone()
         except sqlite3Error as e:
@@ -40,9 +38,8 @@ def get_theme(id: int, debug: bool = False):
 
 # Mettre à jour un thème avec des nouvelles données
 def update_theme(id: int, theme:str, debug: bool = False):
-    with database_connection(debug) as conn:
+    with database_connection(debug) as (conn, c):
         try:
-            c = conn.cursor()
             c.execute("UPDATE themes SET theme=? WHERE id=?", (theme, id))
             conn.commit()
             updated_theme = get_theme(id, debug)
@@ -55,9 +52,8 @@ def update_theme(id: int, theme:str, debug: bool = False):
     
 # Supprimer un thème
 def delete_theme(id: int, debug: bool = False):
-    with database_connection(debug) as conn:
+    with database_connection(debug) as (conn, c):
         try:
-            c = conn.cursor()
             deleted_theme = get_theme(id, debug)
             c.execute("DELETE FROM themes WHERE id=?", (id, ))
             conn.commit()
@@ -74,9 +70,8 @@ def delete_theme(id: int, debug: bool = False):
 # Récupérer toutes les thèmes
 def get_all_themes(debug: bool = False):
     themes = []
-    with database_connection(debug) as conn:
+    with database_connection(debug) as (conn, c):
         try:
-            c = conn.cursor()
             c.execute("SELECT * FROM themes")
             themes = c.fetchall()
             if themes and debug:
@@ -92,9 +87,8 @@ def get_all_themes(debug: bool = False):
 
 # Récupérer l'id d'un thème
 def get_theme_id(theme:str, debug: bool = False):
-    with database_connection(debug) as conn:
+    with database_connection(debug) as (conn, c):
         try:
-            c = conn.cursor()
             c.execute("SELECT id FROM themes WHERE theme=?", (theme,))
             id = c.fetchone()
             if id and debug:

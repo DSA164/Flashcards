@@ -32,7 +32,8 @@ def database_connection(debug: bool = False):
     try:
         conn = connect('flashcard.db')
         open_db(debug)
-        yield conn  # permet de retourner sans intérompre la fonction
+        c = conn.cursor()
+        yield conn, c   # permet de retourner sans intérompre la fonction
     except Error as e:
         print(f"La connection à la base de donnée a échoué en raison de:\n{e}")
         raise # pour que l'erreur soit accessible depuis la fonction parente
@@ -47,7 +48,7 @@ def database_connection(debug: bool = False):
 # Créer une carte
 def create_card(question: str, reponse: str, probabilite: float, id_theme: int, debug: bool = False): 
     last_id = None
-    with database_connection(debug) as conn:
+    with database_connection(debug) as (conn, c):
         try:
             if question in [card[1] for card in get_all_cards(False)]:
                 print("Cette carte est déjà dans la base de données")
@@ -56,7 +57,6 @@ def create_card(question: str, reponse: str, probabilite: float, id_theme: int, 
                 print("La probalité d'apparition d'un carte doit être comprise en 0.1 et 1!")
                 return last_id
             else:
-                c = conn.cursor()
                 c.execute('''INSERT INTO cards (question, reponse, probabilite, id_theme) 
                             VALUES (?, ?, ?, ?)
                         ''', (question, reponse, probabilite, id_theme)
@@ -71,9 +71,8 @@ def create_card(question: str, reponse: str, probabilite: float, id_theme: int, 
     
 # Récupérer une carte    
 def get_card(id: int, debug: bool = False):
-    with database_connection(debug) as conn:
+    with database_connection(debug) as (conn, c):
         try:
-            c = conn.cursor()
             c.execute("SELECT * FROM cards WHERE id=?", (id, )) 
             card = c.fetchone()
         except Error as e:
@@ -86,9 +85,8 @@ def get_card(id: int, debug: bool = False):
 def update_card(id: int, question: str, reponse: str, probabilite: float, id_theme: int, debug: bool = False):
     if probabilite < 0.1 or probabilite > 1:
         print("La probalité d'apparition d'un carte doit être comprise en 0.1 et 1!")
-    with database_connection(debug) as conn:
+    with database_connection(debug) as (conn, c):
         try:
-            c = conn.cursor()
             c.execute('''UPDATE cards SET question=? , reponse=?, probabilite=?, id_theme=? WHERE id=?
                     ''',(question, reponse, probabilite, id_theme, id))
             conn.commit()
@@ -102,9 +100,8 @@ def update_card(id: int, question: str, reponse: str, probabilite: float, id_the
     
 # Supprimer une carte
 def delete_card(id: int, debug: bool = False):
-    with database_connection(debug) as conn:
+    with database_connection(debug) as (conn, c):
         try:
-            c = conn.cursor()
             card = get_card(id, debug)
             c.execute("DELETE FROM cards WHERE id=?", (id, ))
             conn.commit()
@@ -120,9 +117,8 @@ def delete_card(id: int, debug: bool = False):
 # Récupérer toutes les cartes
 def get_all_cards(debug: bool = False):
     cards = []
-    with database_connection(debug) as conn:
+    with database_connection(debug) as (conn, c):
         try:
-            c = conn.cursor()
             c.execute("SELECT * FROM cards")
             cards = c.fetchall()
             if cards and debug:
@@ -137,9 +133,8 @@ def get_all_cards(debug: bool = False):
     
 # Retourner le nombre total de cartes
 def get_number_of_cards(debug: bool = False): 
-    with database_connection(debug) as conn:
+    with database_connection(debug) as (conn, c):
         try:
-            c = conn.cursor()
             c.execute("SELECT COUNT(id) FROM cards")
             count = c.fetchone()
         except Error as e:
@@ -151,9 +146,8 @@ def get_number_of_cards(debug: bool = False):
 # Récupérer les cartes appartenant à un thème particulier
 def get_cards_by_theme(id_theme: int, debug: bool = False):
     cards = []
-    with database_connection(debug) as conn:    
+    with database_connection(debug) as (conn, c):    
         try:
-            c = conn.cursor()
             c.execute("SELECT * FROM cards WHERE id_theme=?", (id_theme,))
             cards = c.fetchall()
             if cards and debug:

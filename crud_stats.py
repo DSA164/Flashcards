@@ -15,9 +15,8 @@ import matplotlib.pyplot as plt
 def update_stats(is_correct: bool, debug: bool = False):
     today = datetime.now().strftime('%Y-%m-%d')   # mise au format SQL
     stat = None
-    with database_connection(debug) as conn:
+    with database_connection(debug) as (conn, c):
         try:
-            c = conn.cursor()
             c.execute("SELECT bonnes_reponses, mauvaises_reponses FROM stats WHERE date=?", (today,))
             reponses = c.fetchone()
             # Creer un nouvelle entrée si non existant
@@ -62,9 +61,8 @@ def update_card_probability(card_id: int, is_correct: bool, debug: bool = False)
 
 # Récupérer les statistiques au cours du temps
 def get_stats(debug: bool = False):
-    with database_connection(debug) as conn:
+    with database_connection(debug) as (conn, c):
         try:
-            c = conn.cursor()
             c.execute("SELECT * FROM stats")
             stats = c.fetchall()
             if not stats:
