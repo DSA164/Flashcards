@@ -1,0 +1,21 @@
+[project]
+name = "Flashcards_Streamlit_App"
+version = "0.1.0"
+description = "Python projet to manage Flashcards and users in SQL database with sqlite3. The application is meant to be run on streaml"
+authors = [
+    {name = "Dirkie Sacchet"}
+]
+readme = "README.md"
+requires-python = "^3.12"
+dependencies = [
+    "streamlit (==1.42.0)",
+    "streamlit-authenticator (==0.4.2)",
+    "pandas (==2.2.2)",
+    "pyfiglet (==1.0.3)",
+    "matplotlib (==3.8.4)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
