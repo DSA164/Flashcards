@@ -58,4 +58,5 @@ Programme de flashcards en python pour des fiches d'apprentissage par renforceme
   - Classification des messages via message_type (info/warning/error)
   - Affichage conditionnel en mode debug
   - Simplification de la gestion de connexion (connexion ignorée avec ‘_’)
-  - Introduction de dictionnaires multilingues pour les messages SQL"
+  - Introduction de dictionnaires multilingues pour les messages SQL `common_language.py`
+  - Regroupement de fonctions et variables communes aux fonctions sqlite dans le scrypt `common_sqlite.py`git
