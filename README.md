@@ -80,3 +80,11 @@ Programme de flashcards en python pour des fiches d'apprentissage par renforceme
   - Implémentation des fonctionnalités du jeu dans `common_streamlit.py`
   - Implémentation de fonctions d'affichages avec intégration d'html: `items_streamlit.py`
   - Implémentation de fonctions pour la gestion des log et creation d'utilisateurs avec le module Streamlit-Authentificator 0.4.2: `common_authentificator.py`
+
+## V2.1
+
+- Préparation du packaging pour le déploiement sur Streamlit Cloud  
+  - Definition de la version de python à utiliser: `.python-version` 
+  - Definition du projet avec poetry: `pyproject.toml`
+  - Ajout des dépendances: `poetry.lock` et `requirements.txt`
+
