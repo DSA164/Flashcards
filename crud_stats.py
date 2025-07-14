@@ -2,9 +2,16 @@
 #===============================================
 
 from sqlite3 import Error as sqlite3Error
-from crud_cards import database_connection, get_card,update_card
+from crud_cards import get_card,update_card
 from datetime import datetime
 import matplotlib.pyplot as plt
+from common_language import LANGUAGE, MESSAGE_TYPES # ('success', 'warning', 'error', 'info')
+from common_sqlite import database_connection, SQL_MESSAGE, SQL_WARNING, SQL_ERROR
+
+from streamlit import session_state as stss
+if 'language' not in stss:
+            stss.language = LANGUAGE[0]
+language = stss.language
 
 #      Manipulation de la base de donnée
 #-------------------------------------------

@@ -50,3 +50,12 @@ Programme de flashcards en python pour des fiches d'apprentissage par renforceme
 ## V1.6
 - Amélioration de la gestion de la connexion à la base de données : `database_connection()` retourne désormais à la fois l'instance de connexion `conn` et le curseur `c` pour faciliter les opérations sur la base de données et éviter les répétitions.
 - Amélioration du formatage de `README.md`
+
+## V1.7
+- Enrichissement des fonctions SQLite avec typage, gestion des messages et support multilingue
+  - Typage de retour explicite (ie: Tuple[Optional[Row], str, str])
+  - Ajout de messages contextuels (succès, introuvable, erreur)
+  - Classification des messages via message_type (info/warning/error)
+  - Affichage conditionnel en mode debug
+  - Simplification de la gestion de connexion (connexion ignorée avec ‘_’)
+  - Introduction de dictionnaires multilingues pour les messages SQL"
