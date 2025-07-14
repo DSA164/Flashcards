@@ -70,3 +70,13 @@ Programme de flashcards en python pour des fiches d'apprentissage par renforceme
   - Ajout de la table **events** (historique des réponses : success/failure, timestamp, FK ON DELETE CASCADE)  
   - Passage à `ON DELETE CASCADE` pour les nouvelles relations pour éviter les éléments vide dans la DB
 - Ajout de .gitignore avec la ligne __pycache__
+
+## 2.0
+- Création d'une application Streamlit avec des pages pour la gestion du jeu et des fonctionnalités principales
+  - Pages principale de jeu `Flashcards.py`
+  - Ajout de pages interactives (dossier `/pages`) pour la gestion des cartes `Manage_cards.py` et des thèmes `Manage_themes.py`, 
+  - Ajout d'une pages pour la visualisation des statistiques `Stats.py` dans le dossier pages
+  - Implémentation de fonctionnalités Streamlit communes dans `common_streamlit.py`
+  - Implémentation des fonctionnalités du jeu dans `common_streamlit.py`
+  - Implémentation de fonctions d'affichages avec intégration d'html: `items_streamlit.py`
+  - Implémentation de fonctions pour la gestion des log et creation d'utilisateurs avec le module Streamlit-Authentificator 0.4.2: `common_authentificator.py`
