@@ -60,3 +60,13 @@ Programme de flashcards en python pour des fiches d'apprentissage par renforceme
   - Simplification de la gestion de connexion (connexion ignorée avec ‘_’)
   - Introduction de dictionnaires multilingues pour les messages SQL `common_language.py`
   - Regroupement de fonctions et variables communes aux fonctions sqlite dans le scrypt `common_sqlite.py`git
+
+## V1.8
+- Ajout de 5 nouveaux thèmes et mise à jour pour des fonctions avec "message management" de la V1.7 dans le script: `TEST1 - inject_python_flashcards.py`  
+  - Ajout
+- Enrichissement de la base de données avec des nouvelles tables pour les gestions des utilisateurs et de leur statistiques: `init.py`
+  - Ajout de la table **users** (gestion des comptes : id, username (unique), name, password, role, date_joined)  
+  - Ajout de la table **user_card_probabilities** (liaison user–card, probabilité par défaut 0.5, FK ON DELETE CASCADE, contrainte UNIQUE)  
+  - Ajout de la table **events** (historique des réponses : success/failure, timestamp, FK ON DELETE CASCADE)  
+  - Passage à `ON DELETE CASCADE` pour les nouvelles relations pour éviter les éléments vide dans la DB
+- Ajout de .gitignore avec la ligne __pycache__
