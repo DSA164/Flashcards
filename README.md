@@ -37,7 +37,7 @@ Programme de flashcards en python pour des fiches d'apprentissage par renforceme
 - Corrections mineures dans `crud_cards.py`, `crud_themes.py` et `main.py`
 - Correction des paragraphes dans `Instructions.md`
 
-## V1.5
+## v1.5
 - Création des fichiers de test: 
   - TEST1 pour tester la fonction init_db en créant 20 flashcards: 10 sur le thème "Python" et 10 sur le thème "SQL" 
   - TEST2 pour les fonctions CRUD de manipulation des tables Cards, Themes et Stats
@@ -47,11 +47,11 @@ Programme de flashcards en python pour des fiches d'apprentissage par renforceme
 - Correction dans des fonctions `create_card()` et `create_theme()` avec une vérification de l'existence de l'instance dans la BD avant insertion.
 - Correction de code mineures
 
-## V1.6
+## v1.6
 - Amélioration de la gestion de la connexion à la base de données : `database_connection()` retourne désormais à la fois l'instance de connexion `conn` et le curseur `c` pour faciliter les opérations sur la base de données et éviter les répétitions.
 - Amélioration du formatage de `README.md`
 
-## V1.7
+## v1.7
 - Enrichissement des fonctions SQLite avec typage, gestion des messages et support multilingue
   - Typage de retour explicite (ie: Tuple[Optional[Row], str, str])
   - Ajout de messages contextuels (succès, introuvable, erreur)
@@ -61,7 +61,7 @@ Programme de flashcards en python pour des fiches d'apprentissage par renforceme
   - Introduction de dictionnaires multilingues pour les messages SQL `common_language.py`
   - Regroupement de fonctions et variables communes aux fonctions sqlite dans le scrypt `common_sqlite.py`git
 
-## V1.8
+## v1.8
 - Ajout de 5 nouveaux thèmes et mise à jour pour des fonctions avec "message management" de la V1.7 dans le script: `TEST1 - inject_python_flashcards.py`  
   - Ajout
 - Enrichissement de la base de données avec des nouvelles tables pour les gestions des utilisateurs et de leur statistiques: `init.py`
@@ -71,7 +71,7 @@ Programme de flashcards en python pour des fiches d'apprentissage par renforceme
   - Passage à `ON DELETE CASCADE` pour les nouvelles relations pour éviter les éléments vide dans la DB
 - Ajout de .gitignore avec la ligne __pycache__
 
-## 2.0
+## v2.0
 - Création d'une application Streamlit avec des pages pour la gestion du jeu et des fonctionnalités principales
   - Pages principale de jeu `Flashcards.py`
   - Ajout de pages interactives (dossier `/pages`) pour la gestion des cartes `Manage_cards.py` et des thèmes `Manage_themes.py`, 
@@ -81,10 +81,13 @@ Programme de flashcards en python pour des fiches d'apprentissage par renforceme
   - Implémentation de fonctions d'affichages avec intégration d'html: `items_streamlit.py`
   - Implémentation de fonctions pour la gestion des log et creation d'utilisateurs avec le module Streamlit-Authentificator 0.4.2: `common_authentificator.py`
 
-## V2.1
+## v2.1
 
 - Préparation du packaging pour le déploiement sur Streamlit Cloud  
   - Definition de la version de python à utiliser: `.python-version` 
   - Definition du projet avec poetry: `pyproject.toml`
   - Ajout des dépendances: `poetry.lock` et `requirements.txt`
 
+## v2.2
+- Ajout de fonctions de gestion des tables **user_card_probabilities** et **events** dans `dans crud_stats.py`
+- Correction de bug de connection, déconnection et de sortie du mode jeu
