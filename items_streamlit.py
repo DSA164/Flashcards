@@ -45,7 +45,6 @@ def etat_selection(selection, text):
 
     # Bouton visuel "allumé" ou "éteint" selon l'état
     button_color = "#5686C4" if selection else "#CCCCCC"
-    button_text = text if selection else text
 
     st.markdown(
         f"""
@@ -65,7 +64,7 @@ def etat_selection(selection, text):
             margin-top: 32px;     /* ou la valeur que tu veux */
             argin-bottom: 32px;
             ">
-            {button_text}
+            {text}
         </div>
         """, 
         unsafe_allow_html=True

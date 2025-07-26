@@ -496,6 +496,10 @@ AUTH_WARNING = {
             LANGUAGE[0]: "Ce nom d'utilisateur est déjà pris, veuillez en choisir un autre.",
             LANGUAGE[1]: 'This username is already taken, please choose another one.',
         },
+    'already_logged': {
+            LANGUAGE[0]: 'Vous êtes déjà connecté avec un compte utilisateur. Veuillez vous déconnecter avant de vous connecter avec un autre compte.',
+            LANGUAGE[1]: 'You are already logged in with a user account. Please log out before signing in with another account.',
+        },
     '': {
             LANGUAGE[0]: '',
             LANGUAGE[1]: '',

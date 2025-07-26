@@ -105,6 +105,8 @@ def init_session_variable_dict(sess_var_list: List[dict] = None, sess_var_list_w
 def init_play_session(reset: bool = False):
     play_sess_var_list = {
         'game_ongoing': False,
+        'user_id': None,
+        'logout': True,
         'all_themes_get': [],
         'options_themes': [],
         'selection_themes': [],
@@ -112,8 +114,8 @@ def init_play_session(reset: bool = False):
         'themes_selection_fixed': False,
         'next_round':  False,
         'card_is_chosen': False ,
-        'chosen_theme_key'
-        'chosen_card': False ,
+        'chosen_theme_key': [],
+        'chosen_card': [None, None, None, None, None],
         'card_available': False ,
         'cards_list': [],
         'submitted': False ,
@@ -280,11 +282,20 @@ def sidebar_common():
         stss['debug'] = st.toggle(label='Debug')
         
         if 'authentication_status' in stss and stss.authentication_status:
-            st.sidebar.success(f"{AUTH_MESSAGE['welcome'][stss.language]} *{stss.name}* :grinning:")                
-            stss.authenticator.logout(AUTH_MESSAGE['logout'][stss.language], "sidebar")
+            st.sidebar.success(f"{AUTH_MESSAGE['welcome'][stss.language]} *{stss.name}* :grinning:")
+            if stss.authenticator.logout(AUTH_MESSAGE['logout'][stss.language], "sidebar"):
+                init_play_session(reset = True)
+                for func in PLAY_FUNCS:
+                    stss[func] = True if func == 'intro_play' else False
+                #st.rerun()
+                st.session_state["_force_rerun"] = True  # Flag pour forcer un rerun complet
             
         stop_pl_hold = st.empty()
         play_pl_hold = st.empty()
+        
+        if stss['debug']:
+            for func in PLAY_FUNCS:
+                st.write(f'{func}: {stss[func]}')
             
     return play_pl_hold, stop_pl_hold
 

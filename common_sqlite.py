@@ -35,6 +35,14 @@ SQL_MESSAGE = {
             LANGUAGE[0]: "L'ID",
             LANGUAGE[1]: 'The ID',
         },
+    'at_id': {
+            LANGUAGE[0]: "à l'ID",
+            LANGUAGE[1]: 'at the ID',
+        },
+    'event': {
+            LANGUAGE[0]: "L'événement",
+            LANGUAGE[1]: 'The event',
+        },
     'existing': {
             LANGUAGE[0]: 'existant',
             LANGUAGE[1]: 'current',
@@ -54,6 +62,22 @@ SQL_MESSAGE = {
     'user_created': {
             LANGUAGE[0]: "L'utilisateur a été ajouté à la base de données à l'ID",
             LANGUAGE[1]: "The user has been added to the database at ID",
+        },
+    'event_recorded': {
+            LANGUAGE[0]: "L'événement a été enregistré dans la base de données à l'ID",
+            LANGUAGE[1]: "The event has been recorded intto the database at ID",
+        },
+    'card_proba': {
+            LANGUAGE[0]: "La probabilité d'apparition de la carte ID =",
+            LANGUAGE[1]: "The appearance probability for the card ID =",
+        },
+    'for_user': {
+            LANGUAGE[0]: "pour l'utilisateur ID =",
+            LANGUAGE[1]: "for the user ID =",
+        },
+    'user_card_proba': {
+            LANGUAGE[0]: "La 'user card proba' à l'ID",
+            LANGUAGE[1]: "La 'user card proba' at the ID",
         },
     'created': {
             LANGUAGE[0]: "a été ajouté à la base de données à l'ID",
@@ -131,6 +155,18 @@ SQL_MESSAGE = {
             LANGUAGE[0]: 'dans la table',
             LANGUAGE[1]: 'in the table',
         },
+    'list_events_by_user': {
+            LANGUAGE[0]: "La liste des évenements pour l'utilisateur",
+            LANGUAGE[1]: 'The list of events for the user',
+        },
+    'list_events_by_user_id': {
+            LANGUAGE[0]: "La liste des évenements pour l'utilisateur",
+            LANGUAGE[1]: 'The list of events for the user',
+        },
+    'user_card_proba_id': {
+            LANGUAGE[0]: "L'ID de la 'user card proba' (user_id, card_id) = ",
+            LANGUAGE[1]: "The ID of the 'user card proba' (user_id, card_id) =  ",
+        },
 
 }
 
@@ -189,6 +225,10 @@ SQL_WARNING = {
             LANGUAGE[0]: "est déjà présent dans la base de données",
             LANGUAGE[1]: "is already present in the database",
         },
+    'could_not_be_modified': {
+            LANGUAGE[0]: "n'a pus pu être modifiée en raison de:",
+            LANGUAGE[1]: "could not be modified for the following reason:",
+        },
     
 }
 
@@ -216,6 +256,10 @@ SQL_ERRORS = {
             LANGUAGE[0]: "Une erreur est survenue lors de la tentative de récupération de l'utilisateur",
             LANGUAGE[1]: 'An error occurred while attempting to retrieve the user',
         },
+    'error_missing_event': {
+            LANGUAGE[0]: "Une erreur est survenue lors de la tentative de récupération de l'événement",
+            LANGUAGE[1]: 'An error occurred while attempting to retrieve the event',
+        },
     'error_all_cards_get': {
             LANGUAGE[0]: "La liste des cartes n'a pas pu être récupérée de la base de données, en raison de",
             LANGUAGE[1]: "The list of cards could not be retrieved from the database due to",
@@ -240,6 +284,10 @@ SQL_ERRORS = {
             LANGUAGE[0]: "Une erreur est survenue lors de la tentative de création de l'utilisateur",
             LANGUAGE[1]: "An error occurred while attempting to create the user",
         }, 
+    'error_event_record': {
+            LANGUAGE[0]: "Une erreur est survenue lors de la tentative de enregistrement de l'événement",
+            LANGUAGE[1]: "An error occurred while attempting to record the event",
+        }, 
     'error_card_update': {
             LANGUAGE[0]: "Une erreur est survenue lors de la tentative de mise à jour de la carte",
             LANGUAGE[1]: "An error occurred while attempting to update the card",
@@ -247,6 +295,14 @@ SQL_ERRORS = {
     'error_get_theme_id': {
             LANGUAGE[0]: "Une erreur est survenue lors de la tentative de récupération de l'ID du theme",
             LANGUAGE[1]: "An error occurred while attempting to get the theme's ID",
+        },
+    'error_get_user_card_proba_id': {
+            LANGUAGE[0]: "Une erreur est survenue lors de la tentative de récupération de l'ID de la 'user card proba' (user_id, card_id) =",
+            LANGUAGE[1]: "An error occurred while attempting to get the 'user card proba' ID for (user_id, card_id) =",
+        },
+    'error_get_user_card_proba_by_id': {
+            LANGUAGE[0]: "Une erreur est survenue lors de la tentative de récupération de la 'user card proba' à l'ID",
+            LANGUAGE[1]: "An error occurred while attempting to get the 'user card proba' at the ID",
         },
     'error_theme_update': {
             LANGUAGE[0]: "Une erreur est survenue lors de la tentative de mise à jour de la carte",

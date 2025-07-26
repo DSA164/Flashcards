@@ -1,7 +1,8 @@
 import streamlit as st 
 from streamlit import session_state as stss
 from crud_themes import get_all_themes, get_theme, get_used_theme_ids
-from crud_users import create_user
+from crud_users import get_user_by_username 
+from crud_stats import update_user_card_probability, record_event_by_user_id
 from common_authentificator import sign_in_form
 from common_language import PAGES_STR, BUTTON_STR, GAME_STR, MESSAGE_TYPES # ('success', 'warning', 'error', 'info')
 from common_sqlite import SQL_MESSAGE, SQL_WARNING, SQL_ERRORS
@@ -14,6 +15,17 @@ import random
 
 
 st.set_page_config(page_title='Flashcards', layout = 'wide', page_icon = ':black_joker:')
+
+# Vérifie si on doit forcer un rerun complet
+if st.session_state.get("_force_rerun", False):
+    st.session_state["_force_rerun"] = False
+    st.rerun()
+    
+#if stss.get("authentication_status") is None:
+#    init_play_session(reset=True)
+#    go_to_function_play(PLAY_FUNCS[0])
+
+
 init_play_session()
 play_pl_hold, stop_pl_hold = sidebar_common()
 
@@ -35,8 +47,11 @@ for func in PLAY_FUNCS[1:]:
 #---------------------------------------------------# 
 #          Starting section (page d'intro)          #
 #---------------------------------------------------# 
-if stss[PLAY_FUNCS[0]]:
-    
+if stss[PLAY_FUNCS[0]] or (stss.get("authentication_status") is None and stss[PLAY_FUNCS[3]]):
+    if not stss[PLAY_FUNCS[0]]: # pour reinitialiser l'app à la page d'acceuil depuis le deconnection en mode "jeux"
+        go_to_function_play(PLAY_FUNCS[0])
+        init_play_session(reset = True)
+        
     if 'debug' in stss and stss.debug:
         st.sidebar.subheader(PAGES_STR['session_variables'][stss.language])
         st.sidebar.write(stss)
@@ -113,24 +128,31 @@ elif stss[PLAY_FUNCS[2]]:
     # Initialisation de l'authentificateur
     _,  login_c1 , _  = st.columns((1, 2, 1))
     with login_c1:
-        authenticator, authenticator_message, authenticator_message_type = init_authentificator()
+        if stss.logout == True:
+            stss.authenticator, authenticator_message, authenticator_message_type = init_authentificator()
+        else:
+            st.warning(AUTH_WARNING['already_logged'][stss.language])
+            
 
     # --- Affichage du formulaire de connexion ---
     # ATTENTION depuis la version 0.4 authenticator ne retourne plus de variable mais écrit directement dans la session state
-    authenticator.login(location="main")
+    stss.authenticator.login(location="main")
     
     # --- Gestion des états d'authentification ---
     if stss.authentication_status:
-        st.sidebar.success(f"{AUTH_MESSAGE['welcome'][stss.language]} *{stss.name}* :grinning:")
-        authenticator.logout(AUTH_MESSAGE['logout'][stss.language], "sidebar")
-        stss.authenticator = authenticator
+        #st.sidebar.success(f"{AUTH_MESSAGE['welcome'][stss.language]} *{stss.name}* :grinning:")
+        #authenticator.logout(AUTH_MESSAGE['logout'][stss.language], "sidebar")
+        #stss.authenticator = authenticator
         print(f"{AUTH_MESSAGE['connected'][stss.language]}.")
+        user_get, _, _ = get_user_by_username(stss.name)
+        stss.user_id = user_get[0]
         go_to_function_play(PLAY_FUNCS[3])
     elif stss.authentication_status is False:
         st.error(AUTH_ERRORS['incorrect_credentials'][stss.language])
     elif stss.authentication_status is None:
         st.info(AUTH_MESSAGE['give_credentials'][stss.language])
       
+
 
 
 #---------------------------------------------------# 
@@ -179,19 +201,23 @@ elif stss[PLAY_FUNCS[3]]:
                         
            
             current_selection = stss.selection_themes
-            st.multiselect(
+            
+            selection_themes = st.multiselect(
                 label = BUTTON_STR['select_themes'][stss.language], 
                 options = stss.options_themes, 
-                default = stss.selection_themes, # default = stss.selection_themes
+                #default = stss.selection_themes, # default = stss.selection_themes
                 key = "selection_themes", # (on ne met rien ce qui permet que le multiselect soit dynamique)
                 label_visibility = "hidden",
                 placeholder = BUTTON_STR['select_themes'][stss.language],
                 disabled = stss.next_round == True or stss.game_ongoing == True
                 )
-
+            
+            #if selection_themes != stss.selection_themes:
+             #   st.rerun()
+        
             # ATTENTION: bug de streamlit qui a toujours un état de retard sur le modification des widget:
             # SOLUTION TROUVÉE: calculer dynamiquement la variable, au lieu d'utiliser la variable de session
-            selection_themes = stss.selection_themes
+            #selection_themes = stss.selection_themes
             
             play_themes = [theme for theme in stss.all_themes if theme[1] in selection_themes]
             
@@ -282,6 +308,9 @@ elif stss[PLAY_FUNCS[3]]:
                     stss.submitted = True
                     st.rerun()
                     
+            #-------------------------------------------#
+            #              Reponse correcte.            #
+            #-------------------------------------------#
             elif stss.correct_response == 'yes':
                 bravo_keys = [key for key in GAME_STR if key.startswith("bravo")]
                 bravo_random = random.choice(bravo_keys)
@@ -294,6 +323,9 @@ elif stss[PLAY_FUNCS[3]]:
                     stss.next_round = True
                     st.rerun()
                 
+            #-------------------------------------------#
+            #               Reponse fausse.             #
+            #-------------------------------------------#
             elif stss.correct_response == 'no':
                 wrong_keys = [key for key in GAME_STR if key.startswith("wrong")]
                 wrong_random = random.choice(wrong_keys)
@@ -315,15 +347,24 @@ elif stss[PLAY_FUNCS[3]]:
                 c2.success(stss.chosen_card[2])
                 
                 st.divider()
+                
+                #-------------------------------------------#
+                #          Validation de la réponse         #
+                #-------------------------------------------#
+                increment = 0.05
                 st.write(GAME_STR['do_you_answer_correctly'][stss.language])
                 c1b, c2b = st.columns((1,1))
                 if c1b.button(BUTTON_STR['yes'][stss.language]):
                     stss.correct_response = 'yes'
                     stss.correct_answers += 1
+                    _, _, _ = record_event_by_user_id(user_id = stss.user_id, card_id = stss.chosen_card[0], result='success', debug = stss.debug)
+                    _, _, _ = update_user_card_probability(user_id = stss.user_id, card_id = stss.chosen_card[0], increment = -increment, debug = stss.debug)
 
                 if c2b.button(BUTTON_STR['no'][stss.language]):
                     stss.correct_response = 'no'
                     stss.wrong_answers += 1
+                    _, _, _ = record_event_by_user_id(user_id = stss.user_id, card_id = stss.chosen_card[0], result='failure', debug = stss.debug)
+                    _, _, _ = update_user_card_probability(user_id = stss.user_id, card_id = stss.chosen_card[0], increment = increment, debug = stss.debug)
 
 
     # Liste des themes choisis et Highlight du thème en cours
@@ -347,10 +388,11 @@ elif stss[PLAY_FUNCS[3]]:
                 
             game_c2_c1, game_c2_c2 = st.columns((1,1))
             for i, theme in enumerate(played_themes):
-                if theme == current_theme[0]:
-                    activation = True
-                else: 
-                    activation = False
+                activation = bool(current_theme and theme == current_theme[0])
+                #if theme == current_theme[0]:
+                #    activation = True
+                #else: 
+                #    activation = False
                     
                 if i % 2 == 0:
                     with game_c2_c1:
@@ -368,8 +410,9 @@ elif stss[PLAY_FUNCS[3]]:
                     st.write(f"iteration: {i}, theme: {theme}, activation: {activation}")
     
 
-         
         if stss.debug:
+            st.write(stss)
+        if stss.debug and 'chosen_card' in stss:
             st.write(f"stss.chosen_card[4]: {stss.chosen_card[4]}")
             st.write(f"get_theme(stss.chosen_card[4]): {get_theme(id = stss.chosen_card[4], debug = stss.debug)}")
 
