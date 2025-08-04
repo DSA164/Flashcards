@@ -1,6 +1,6 @@
 import streamlit as st
 from streamlit import session_state as stss
-import streamlit_autpythhenticator as stauth
+import streamlit_authenticator as stauth
 from streamlit_authenticator.utilities.hasher import Hasher
 from crud_users import get_all_users, get_user_by_username, create_user
 import secrets
